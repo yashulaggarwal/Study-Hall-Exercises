@@ -1,0 +1,33 @@
+package excelWriterExample;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+/*
+ * Here we will learn how to create Excel file and header for the same.
+ */
+/**
+ * @author Yashul
+ *
+ */
+public class CreateNewExcelFile {
+	public static void main(String args[]) {
+	FileOutputStream fos = null;
+
+	try {
+	fos = new FileOutputStream(new File("Copy of sample-xlsx-file.xlsx"));
+	String SAMPLE_XLSX_FILE_PATH = "sample-xlsx-file.xlsx";
+	Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+	
+	workbook.write(fos);
+	workbook.close();
+	fos.flush();
+	fos.close();
+	}
+	catch (Exception e) {
+	e.printStackTrace();
+	  }
+	}
+}
