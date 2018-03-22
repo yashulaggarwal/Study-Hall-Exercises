@@ -1,0 +1,119 @@
+package excelWriterExample;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+
+public class SampleExcelReader {
+    public static final String SAMPLE_XLSX_FILE_PATH = "sample-xlsx-file.xlsx";
+
+    public static void main(String[] args) throws IOException, InvalidFormatException {
+
+        // Creating a Workbook from an Excel file (.xls or .xlsx)
+        Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+    
+        // Show the workbook name.
+        System.out.println("Workbook name :sample-xlsx-file.xlsx");
+        
+        // Retrieving the number of sheets in the Workbook along with their names
+        System.out.println("Workbook has" + workbook.getNumberOfSheets() + " Sheets : ");
+        System.out.println("1. Ritu");
+        System.out.println("2. Sample Faculty Effort Log");
+        System.out.println("3. DropDown Lists");
+
+        /*
+           ==================================================================
+           Iterating over all the rows and columns in a Sheet (Multiple ways)
+           ==================================================================
+        */
+
+        // Getting the Sheet at index zero
+        Sheet sheet = workbook.getSheetAt(0);
+        
+        // Create a DataFormatter to format and get each cell's value as String
+        DataFormatter dataFormatter = new DataFormatter();
+        
+        //Implementation of Number of Column and Rows in sheet 1        
+        System.out.println("\nSheet 1 Contains");
+        int a1=sheet.getRow(0).getPhysicalNumberOfCells();
+        String b1=Integer.toString(a1);
+        
+        System.out.println("Total number of columns: " + b1);
+        
+        int c1=sheet.getPhysicalNumberOfRows();
+        String d1=Integer.toString(c1);
+        
+        System.out.println("Total number of Rows: " + d1);
+
+      //Implementation of Number of Column and Rows in sheet 2        
+        System.out.println("\nSheet 2 Contains");
+        int a2=sheet.getRow(0).getPhysicalNumberOfCells();
+        String b2=Integer.toString(a2);
+        
+        System.out.println("Total number of columns: " + b2);
+        
+        int c2=sheet.getPhysicalNumberOfRows();
+        String d2=Integer.toString(c2);
+        
+        System.out.println("Total number of Rows: " + d2);
+        
+      //Implementation of Number of Column and Rows in sheet 3        
+        System.out.println("\nSheet 3 Contains");
+        int a3=sheet.getRow(0).getPhysicalNumberOfCells();
+        String b3=Integer.toString(a3);
+        
+        System.out.println("Total number of columns: " + b3);
+        
+        int c3=sheet.getPhysicalNumberOfRows();
+        String d3=Integer.toString(c3);
+        
+        System.out.println("Total number of Rows: " + d3);
+        
+        // 1. You can obtain a rowIterator and columnIterator and iterate over them
+        System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+                     
+            // Now let's iterate over the columns of the current row
+            Iterator<Cell> cellIterator = row.cellIterator();
+      
+             while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                String cellValue = dataFormatter.formatCellValue(cell);
+                System.out.print(cellValue + "\t");
+            }
+            System.out.println();
+        }
+
+        // 2. Or you can use a for-each loop to iterate over the rows and columns
+        System.out.println("\n\nIterating over Rows and Columns using for-each loop\n");
+        for (Row row: sheet) {
+            for(Cell cell: row) {
+                String cellValue = dataFormatter.formatCellValue(cell);
+                System.out.print(cellValue + "\t");
+            }
+            System.out.println();
+        }
+        // Get the number of rows and columns       
+        int noOfColumns = sheet.getRow(0).getLastCellNum();
+        int noOfRows = sheet.getLastRowNum()+1;
+        System.out.println("The total number of columns are:" + noOfColumns);
+        System.out.println("The total number of rows are:" + noOfRows);
+
+        // 3. Or you can use Java 8 forEach loop with lambda
+        System.out.println("\n\nIterating over Rows and Columns using Java 8 forEach with lambda\n");
+        sheet.forEach(row -> {
+            row.forEach(cell -> {
+                String cellValue = dataFormatter.formatCellValue(cell);
+                System.out.print(cellValue + "\t");
+            });
+            System.out.println();
+        });	
+
+        // Closing the workbook
+        workbook.close();
+    }
+}
